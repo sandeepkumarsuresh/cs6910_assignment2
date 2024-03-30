@@ -47,8 +47,8 @@ if __name__ == '__main__':
     val_dataset = Custom_dataset(dataset_path = 'Train_Val_Dataset/val')
 
 
-    train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_dataloader = DataLoader(val_dataset, batch_size=64, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=32 ,shuffle=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=True)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -57,26 +57,58 @@ if __name__ == '__main__':
     # cnn_model = CNN()
     layer1 = nn.Sequential(
     
-        torch.nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1),
-        torch.nn.ReLU(),
+        torch.nn.Conv2d(3, 16, kernel_size=5, stride=1, padding=1),
+        torch.nn.Tanh(),
         torch.nn.AvgPool2d(kernel_size=2, stride=2)
     
     )
     layer2 = torch.nn.Sequential(
-        torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+        torch.nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1),
         torch.nn.ReLU(),
         torch.nn.MaxPool2d(kernel_size=2, stride=2))
     
+    layer3 = torch.nn.Sequential(
+        torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+        torch.nn.ReLU(),
+        torch.nn.MaxPool2d(kernel_size=2, stride=2))
+
+    layer4 = torch.nn.Sequential(
+        torch.nn.Conv2d(64,128, kernel_size=3, stride=1, padding=1),
+        torch.nn.ReLU(),
+        torch.nn.MaxPool2d(kernel_size=2, stride=2))
+
+    layer5 = torch.nn.Sequential(
+        torch.nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
+        torch.nn.ReLU(),
+        torch.nn.MaxPool2d(kernel_size=2, stride=2))
+    
+    dense_layer = nn.Sequential(
+
+        nn.Linear(in_features=110592,out_features=10),
+        nn.Tanh()
+    )
+
+
     for i, data in enumerate(train_dataloader, 0):
 
         inputs, labels = data
         print(inputs.shape)
         l1 = layer1(inputs)
-        # print(l1.shape)
-        # l2 = layer2(l1)
-        # print(l2.shape)
+        print('layer1',l1.shape)
+        l2 = layer2(l1)
+        print('layer2',l2.shape)
+        l3 = layer3(l2)
+        print('layer3',l3.shape)
+        l4 = layer4(l3)
+        print('layer4',l4.shape)
+        l5 = layer5(l4)
+        print('layer5',l5.shape)
+        
+        x = torch.flatten(l5, 1)
+        print('flatten shape',x.shape)
 
-
+        ll = dense_layer(x)
+        print(ll.shape)
         break
 
     # criterion = nn.CrossEntropyLoss()
