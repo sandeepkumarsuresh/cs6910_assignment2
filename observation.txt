@@ -1,0 +1,12 @@
+10 classes in train and test folder
+train ->10 classes -> 1000 images -> 800 x 600 pixels
+
+pip install split-folders
+
+While coding the CustomDataset class
+                data_transforms = transforms.Compose([
+                    transforms.ToPILImage(),   --> takes PIL Image to Convert
+                    transforms.Resize((self.img_dims)),
+                    transforms.ToTensor(),
+                    transforms.Normalize(mean=(0.5, 0.5,0.5), std=(0.5, 0.5, 0.5))
+                ])
