@@ -5,9 +5,59 @@ import torch
 class CNN(nn.Module):
     def __init__(self):
         super(CNN,self).__init__() 
-        conv1 = torch.nn.Conv2d(3, 16, stride=4, kernel_size=(9,9))
+        self.layer1 = nn.Sequential(
+        
+            torch.nn.Conv2d(3, 16, kernel_size=5, stride=1, padding=1),
+            torch.nn.Tanh(),
+            torch.nn.AvgPool2d(kernel_size=2, stride=2)
+        
+        )
+        self.layer2 = torch.nn.Sequential(
+            torch.nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1),
+            torch.nn.ReLU(),
+            torch.nn.MaxPool2d(kernel_size=2, stride=2))
+        
+        self.layer3 = torch.nn.Sequential(
+            torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+            torch.nn.ReLU(),
+            torch.nn.MaxPool2d(kernel_size=2, stride=2))
 
+        self.layer4 = torch.nn.Sequential(
+            torch.nn.Conv2d(64,128, kernel_size=3, stride=1, padding=1),
+            torch.nn.ReLU(),
+            torch.nn.MaxPool2d(kernel_size=2, stride=2))
 
+        self.layer5 = torch.nn.Sequential(
+            torch.nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
+            torch.nn.ReLU(),
+            torch.nn.MaxPool2d(kernel_size=2, stride=2))
+        
+        self.dense_layer = nn.Sequential(
+
+            nn.Linear(in_features=110592,out_features=10),
+            nn.Tanh()
+        )
+
+    def forward(self,x):
+
+        l1 = self.layer1(x)
+        # print('layer1',l1.shape)
+        l2 = self.layer2(l1)
+        # print('layer2',l2.shape)
+        l3 = self.layer3(l2)
+        # print('layer3',l3.shape)
+        l4 = self.layer4(l3)
+        # print('layer4',l4.shape)
+        l5 = self.layer5(l4)
+        # print('layer5',l5.shape)
+        
+        x = torch.flatten(l5, 1)
+        # print('flatten shape',x.shape)
+
+        ll = self.dense_layer(x)
+        # print(ll.shape)
+
+        return ll
 # class CNN(nn.Module):
 #     def __init__(self):
 #         super(CNN,self).__init__() # Initializing content from the parent class
@@ -57,7 +107,7 @@ class CNN(nn.Module):
 #     def __init__(self):
 #         super(CNN, self).__init__()
 #         self.layer1 = torch.nn.Sequential(
-#             torch.nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
+#             torch.nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1),
 #             torch.nn.ReLU(),
 #             torch.nn.MaxPool2d(kernel_size=2, stride=2))
 #             # torch.nn.Dropout(p=1 - keep_prob))

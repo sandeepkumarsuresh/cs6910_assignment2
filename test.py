@@ -10,33 +10,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import torch.optim as optim
-
+from tqdm import tqdm
 from preprocess import Custom_dataset
 from CNN import CNN
 
 
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
-
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = torch.flatten(x, 1) # flatten all dimensions except batch
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-
 
 if __name__ == '__main__':
 
+    PATH = './model.pth'
 
     # splitfolders.ratio("Datasets/inaturalist_12K/train", output="Train_Val_Dataset",
     #                     seed=1337, ratio=(.8, .2), group_prefix=None, move=False)
@@ -54,90 +36,42 @@ if __name__ == '__main__':
 
     print("Device Available : ",device)
 
-    # cnn_model = CNN()
-    layer1 = nn.Sequential(
-    
-        torch.nn.Conv2d(3, 16, kernel_size=5, stride=1, padding=1),
-        torch.nn.Tanh(),
-        torch.nn.AvgPool2d(kernel_size=2, stride=2)
-    
-    )
-    layer2 = torch.nn.Sequential(
-        torch.nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1),
-        torch.nn.ReLU(),
-        torch.nn.MaxPool2d(kernel_size=2, stride=2))
-    
-    layer3 = torch.nn.Sequential(
-        torch.nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
-        torch.nn.ReLU(),
-        torch.nn.MaxPool2d(kernel_size=2, stride=2))
+    cnn_model = CNN()
 
-    layer4 = torch.nn.Sequential(
-        torch.nn.Conv2d(64,128, kernel_size=3, stride=1, padding=1),
-        torch.nn.ReLU(),
-        torch.nn.MaxPool2d(kernel_size=2, stride=2))
-
-    layer5 = torch.nn.Sequential(
-        torch.nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
-        torch.nn.ReLU(),
-        torch.nn.MaxPool2d(kernel_size=2, stride=2))
-    
-    dense_layer = nn.Sequential(
-
-        nn.Linear(in_features=110592,out_features=10),
-        nn.Tanh()
-    )
+    cnn_model.to(device)
 
 
-    for i, data in enumerate(train_dataloader, 0):
 
-        inputs, labels = data
-        print(inputs.shape)
-        l1 = layer1(inputs)
-        print('layer1',l1.shape)
-        l2 = layer2(l1)
-        print('layer2',l2.shape)
-        l3 = layer3(l2)
-        print('layer3',l3.shape)
-        l4 = layer4(l3)
-        print('layer4',l4.shape)
-        l5 = layer5(l4)
-        print('layer5',l5.shape)
-        
-        x = torch.flatten(l5, 1)
-        print('flatten shape',x.shape)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(cnn_model.parameters(), lr=0.001, momentum=0.9)
 
-        ll = dense_layer(x)
-        print(ll.shape)
-        break
+    for epoch in tqdm(range(2)):  # loop over the dataset multiple times
 
-    # criterion = nn.CrossEntropyLoss()
-    # optimizer = optim.SGD(cnn_model.parameters(), lr=0.001, momentum=0.9)
-    # for epoch in range(2):  # loop over the dataset multiple times
+        running_loss = 0.0
+        for i, data in enumerate(train_dataloader, 0):
+            # get the inputs; data is a list of [inputs, labels]
+            # inputs, labels = data           
+            inputs, labels = data[0].to(device), data[1].to(device)
+            labels = torch.squeeze(labels)
+            # print('label shape',labels.shape)
+            # zero the parameter gradients
+            optimizer.zero_grad()
 
-    #     running_loss = 0.0
-    #     for i, data in enumerate(train_dataloader, 0):
-    #         # get the inputs; data is a list of [inputs, labels]
-    #         inputs, labels = data
+            # forward + backward + optimize
+            outputs = cnn_model(inputs)
+            # print('forward pass shape',outputs.shape)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-    #         # zero the parameter gradients
-    #         optimizer.zero_grad()
+            # print statistics
+            running_loss += loss.item()
+            if i % 2000 == 1999:    # print every 2000 mini-batches
+                print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
+                running_loss = 0.0
 
-    #         # forward + backward + optimize
-    #         outputs = cnn_model(inputs)
-    #         print(outputs.shape)
-    #         loss = criterion(outputs, labels)
-    #         loss.backward()
-    #         optimizer.step()
-
-    #         # print statistics
-    #         running_loss += loss.item()
-    #         if i % 2000 == 1999:    # print every 2000 mini-batches
-    #             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
-    #             running_loss = 0.0
-
-    # print('Finished Training')
-
+    print('Finished Training')
+    torch.save(cnn_model.state_dict(), PATH)
 
 
     # # Display image and label.

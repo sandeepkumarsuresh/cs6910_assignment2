@@ -17,7 +17,7 @@ class Custom_dataset(Dataset):
             for images in os.listdir(os.path.join(dataset_path,data_class)):
                 image_path = os.path.join(dataset_path,data_class,images)
                 self.data.append([image_path,data_class])
-        print(len(self.data))
+        # print(len(self.data))
         self.img_dims=(600,800)
         self.class_map = {
             "Fungi": 0,
