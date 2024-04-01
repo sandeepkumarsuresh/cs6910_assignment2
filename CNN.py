@@ -56,7 +56,7 @@ class CNN(nn.Module):
         self.dense_layer = nn.Sequential(
 
             nn.Linear(self.layer5_size * (250 // (self.pool_stride**5)) * (250 // (self.pool_stride**5)),out_features=10),
-            nn.Dropout2d(p=self.dropout),
+            nn.Dropout(p=self.dropout),
             nn.ReLU()
             
         )
