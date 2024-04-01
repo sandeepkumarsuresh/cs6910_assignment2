@@ -45,7 +45,9 @@ class Custom_dataset(Dataset):
         data_transforms = transforms.Compose([
 
             transforms.ToPILImage(),
-            transforms.Resize((self.img_dims)),
+            transforms.RandomRotation(degrees=30),  
+            transforms.RandomResizedCrop(size=self.img_dims, scale=(0.8, 1.0)), 
+            transforms.RandomHorizontalFlip(), 
             transforms.ToTensor(),
             transforms.Normalize(mean=(0.5, 0.5,0.5), std=(0.5, 0.5, 0.5))
 
