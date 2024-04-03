@@ -1,0 +1,2 @@
+
+batch_size:64filters:128dropout:0.2filter_multiplier:1

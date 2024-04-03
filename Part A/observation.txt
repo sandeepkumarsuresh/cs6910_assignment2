@@ -1,0 +1,37 @@
+10 classes in train and test folder
+train ->10 classes -> 1000 images -> 800 x 600 pixels
+
+Images are not of same size --> Therefore need to resize them
+
+pip install split-folders
+
+While coding the CustomDataset class
+                data_transforms = transforms.Compose([
+                    transforms.ToPILImage(),   --> takes PIL Image to Convert
+                    transforms.Resize((self.img_dims)),
+                    transforms.ToTensor(),
+                    transforms.Normalize(mean=(0.5, 0.5,0.5), std=(0.5, 0.5, 0.5))
+                ])
+
+
+last_layer * (H // (stride**len(layers))) * (W // (stride**len(layers)))
+
+
+# TODO
+
+    ~ figure out why validation acc is more than the training acc
+    ~ Make a class for the train validation 
+    ~ Integrate wandb and run the sweeep
+    
+Done Tasks:
+
+    Add batchnorm and droupout -> done
+    Made CNN.py into class like sdtructure
+    made test.py into function like structure
+    Added Data augmentation
+    Added wandb
+
+TODO
+
+    -CNN formula based on kernel size , padding to CNN.py
+    -model saving

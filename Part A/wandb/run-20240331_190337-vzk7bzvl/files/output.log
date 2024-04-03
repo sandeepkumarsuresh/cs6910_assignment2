@@ -1,0 +1,17 @@
+Device Available :  cpu
+layer1 torch.Size([32, 16, 299, 399])
+  0%|                                                                                                                                                     | 0/2 [00:00<?, ?it/s]
+layer2 torch.Size([32, 32, 149, 199])
+layer3 torch.Size([32, 64, 74, 99])
+  0%|                                                                                                                                                     | 0/2 [00:04<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/test.py", line 209, in <module>
+    loss = criterion(outputs, labels)
+NameError: name 'criterion' is not defined
+Traceback (most recent call last):
+  File "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/test.py", line 209, in <module>
+    loss = criterion(outputs, labels)
+NameError: name 'criterion' is not defined
+layer5 torch.Size([32, 256, 18, 24])
+flatten shape torch.Size([32, 110592])
+torch.Size([32, 10])
