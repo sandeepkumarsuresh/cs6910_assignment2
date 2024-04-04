@@ -3,16 +3,17 @@ import torch.nn.functional as F
 import torch
 
 class CNN(nn.Module):
-    def __init__(self,kernel_size = 3, conv_stride = 1,conv_pad = 1,pool_kernel_size = 2,pool_stride = 2,in_channel = 3, num_filter = 8,filter_multiplier = 2,dropout = 0.2):
+    def __init__(self,kernel_size = 3, conv_stride = 1,pool_kernel_size = 2,pool_stride = 2,in_channel = 3, num_filter = 128,filter_multiplier = 0.5,dropout = 0.3,dense_neuron = 1000 , num_classes = 10):
         self.kernel_size = kernel_size
         self.conv_stride = conv_stride
-        self.conv_pad = conv_pad
+        self.conv_pad = self.kernel_size//2
         self.pool_kernel_size = pool_kernel_size
         self.pool_stride = pool_stride
         self.in_channel = in_channel
         self.filter_multiplier = filter_multiplier
         self.dropout = dropout
-
+        self.dense_neuron = dense_neuron
+        self.num_classes = num_classes
         self.layer1_size = int(num_filter)
         self.layer2_size = int(self.layer1_size * filter_multiplier)
         self.layer3_size = int(self.layer2_size * filter_multiplier)
@@ -55,10 +56,15 @@ class CNN(nn.Module):
         
         self.dense_layer = nn.Sequential(
 
-            nn.Linear(self.layer5_size * (250 // (self.pool_stride**5)) * (250 // (self.pool_stride**5)),out_features=10),
-            nn.Dropout(p=self.dropout),
-            nn.ReLU()
+            nn.Linear(self.layer5_size * (250 // (self.pool_stride**5)) * (250 // (self.pool_stride**5)),out_features=1000),
+            nn.ReLU(),
+            nn.Dropout(p=self.dropout)
             
+        )
+
+        self.output_layer = nn.Sequential(
+            nn.Linear(self.dense_neuron,self.num_classes),
+            nn.Softmax()
         )
 
     def forward(self,x):
@@ -78,6 +84,8 @@ class CNN(nn.Module):
         # print('flatten shape',x.shape)
 
         ll = self.dense_layer(x)
+
+        ol = self.output_layer(ll)
         # print(ll.shape)
 
-        return ll
+        return ol

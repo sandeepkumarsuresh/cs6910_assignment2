@@ -1,12 +1,33 @@
 import torch
-from preprocess import Custom_dataset
+from preprocess import Custom_val_dataset
 from torch.utils.data import DataLoader
 from CNN import CNN
 
+def calculate_accuracy(model,dataloader):
+
+    model.eval() # Turns of Specific Parameters like BatchNorm , Dropout
+
+    total_correct = 0
+    total_samples = 0
+
+    with torch.no_grad():
+        for images , labels in (dataloader):
+            images,labels = images.to(device),labels.to(device)
+
+            predictions = torch.argmax(model(images),dim=1)
+            labels = torch.squeeze(labels)
+
+            correct_prediction = sum(predictions==labels).item()
+
+            total_correct += correct_prediction
+            total_samples += len(images)
+
+    return round(total_correct/total_samples , 3)
+
 if __name__ == '__main__':
 
-    BATCH_SIZE = 68
-    MODEL_PATH = f'./model_{BATCH_SIZE}.pth'
+    BATCH_SIZE = 32
+    MODEL_PATH = 'model_dir/Adam Optimizer:batch_size:32filters:128dropout:0.3filter_multiplier:0.5kernel_size:3'
     class_map = (
                 "Fungi",
                 "Insecta",
@@ -24,7 +45,7 @@ if __name__ == '__main__':
     print("Device Available : ",device)
 
 
-    val_dataset = Custom_dataset(dataset_path = 'Train_Val_Dataset/val')
+    val_dataset = Custom_val_dataset(dataset_path = 'inaturalist_12K/val')
     val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
     # dataiter = iter(val_dataloader)
@@ -32,27 +53,33 @@ if __name__ == '__main__':
 
     # inputs, labels = dataiter[0].to(device), dataiter[1].to(device)
 
-    net = CNN()
-    net.to(device)
+    model = CNN()
+    model.to(device)
 
-    net.load_state_dict(torch.load(MODEL_PATH))
+    model.load_state_dict(torch.load(MODEL_PATH))
 
-    correct = 0
-    total = 0
-    # since we're not training, we don't need to calculate the gradients for our outputs
-    with torch.no_grad():
-        for data in val_dataloader:
-            # images, labels = data
-            images, labels = data[0].to(device), data[1].to(device)
+    # running_accuracy = 0
+    # total = 0
 
-            # calculate outputs by running images through the network
-            outputs = net(images)
-            # the class with the highest energy is what we choose as prediction
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+    # model.eval()
+    # with torch.no_grad():
+    #     for data in val_dataloader:
+    #         inputs, outputs = data
+    #         inputs = inputs.to(device)
+    #         outputs = outputs.to(device)
 
-    print(f'Accuracy of the network on the 10000 test images: {100 * correct // total} %')
+    #         predicted_outputs = model(inputs)
+
+    #         _, predicted = torch.max(predicted_outputs, 1)
+
+    #         total += outputs.size(0)
+    #         running_accuracy += (predicted == outputs).sum().item()
+
+    acc = calculate_accuracy(model,val_dataloader)
+
+print('Accuracy of the model based on the test set of inputs is: %.2f %%' % (acc))
+
+ 
 
     # correct_pred = {classname: 0 for classname in class_map}
     # total_pred = {classname: 0 for classname in class_map}

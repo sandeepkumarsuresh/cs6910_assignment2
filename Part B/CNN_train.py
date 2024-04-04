@@ -4,13 +4,14 @@ from tqdm import tqdm
 import wandb
 class CNN_train():
 
-    def __init__(self,model,train_dataloader,val_dataloader,optimizer,loss_function,device):
+    def __init__(self,model,train_dataloader,val_dataloader,optimizer,loss_function,device,epoch = 10):
         self.model = model
         self.train_dataloader = train_dataloader
         self.optimizer = optimizer
         self.loss_function = loss_function
         self.device = device
         self.val_dataloader = val_dataloader
+        self.epoch = epoch
 
     def train_cnn(self):
 
@@ -75,8 +76,8 @@ class CNN_train():
 
     def fit(self):
     
-        for epoch in range(3):
-            print(f'Epoch {epoch+1}/{3}')
+        for epoch in range(self.epoch):
+            print(f'Epoch {epoch+1}/{self.epoch}')
             train_losses = []
 
             train_losses.append(self.train_cnn())
@@ -96,5 +97,5 @@ class CNN_train():
 
             train_losses = np.array(train_losses).mean()
             val_losses = np.array(val_losses).mean()
-            wandb.log({'training_loss':round(train_losses, 4) , "training_accuracy": train_accuracy ,  "validation_loss": round(val_losses, 4)  , "validation_accuracy":val_accuracy })
+            # wandb.log({'training_loss':round(train_losses, 4) , "training_accuracy": train_accuracy ,  "validation_loss": round(val_losses, 4)  , "validation_accuracy":val_accuracy })
             print(f'training_loss: {round(train_losses, 4)}  training_accuracy: '+f'{train_accuracy}  validation_loss: {round(val_losses, 4)} '+ f'validation_accuracy: {val_accuracy}\n')

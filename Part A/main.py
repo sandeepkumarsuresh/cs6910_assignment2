@@ -18,14 +18,14 @@ import wandb
 from CNN_train import CNN_train
 
 sweep_configuration = {
-    'method': 'random', #grid, bayes
+    'method': 'random', #grid, random
     'metric': {
     'name': 'validation_accuracy',
     'goal': 'maximize'   
     },
     'parameters': {
         'n_filters': {
-            'values': [32,64,128]
+            'values': [64,128,256]
         },
         'data_augmentation': {
             'values': ['True']
@@ -37,10 +37,13 @@ sweep_configuration = {
             'values': [0.2,0.3]
         },
         'batch_size':{
-            'values': [32,64]
+            'values': [32]
         },
         'filter_multiplier':{
-            'values':[1,2,0.5]
+            'values':[0.5,1,2]
+        },
+        'kernel_size':{
+            'values':[3,5]
         }
     }
 }
@@ -51,19 +54,16 @@ def do_sweep():
 
     wandb.init()
     config = wandb.config
-    run_name = "batch_size:"+str(config.batch_size)+"filters:"+str(config.n_filters) + "dropout:"+str(config.dropout)+"filter_multiplier:"+str(config.filter_multiplier)
+    run_name = "Adam Optimizer:"+"batch_size:"+str(config.batch_size)+"filters:"+str(config.n_filters) + "dropout:"+str(config.dropout)+"filter_multiplier:"+str(config.filter_multiplier)+"kernel_size:"+str(config.kernel_size)
     print(run_name)
     wandb.run.name = run_name
 
-    train_dataset = Custom_train_dataset(dataset_path = '../Train_Val_Dataset/train')
-    val_dataset = Custom_val_dataset(dataset_path = '../Train_Val_Dataset/val')
+    train_dataset = Custom_train_dataset(dataset_path = 'Train_Val_Dataset/train')
+    val_dataset = Custom_val_dataset(dataset_path = 'Train_Val_Dataset/val')
 
 
     train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size ,shuffle=True)
     val_dataloader = DataLoader(val_dataset, batch_size=config.batch_size, shuffle=True)
-
-
-
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -72,6 +72,7 @@ def do_sweep():
         num_filter=config.n_filters,
         filter_multiplier=config.filter_multiplier,
         dropout=config.dropout,
+        kernel_size=config.kernel_size
         
     )
 
@@ -80,12 +81,20 @@ def do_sweep():
 
 
     loss_function = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(cnn_model.parameters(), lr=0.001, momentum=0.9)
+    # optimizer = optim.SGD(cnn_model.parameters(), lr=0.001, momentum=0.9)
+
+    # optimizer = optim.Adam(cnn_model.parameters(), lr=0.0001)
+
+    optimizer = optim.NAdam(cnn_model.parameters())
+
+
 
 
     trainer = CNN_train(cnn_model,train_dataloader,val_dataloader,optimizer,loss_function,device)
 
     trainer.fit()
+
+    torch.save(cnn_model.state_dict(), f'{MODEL_SAV_DIR}/{run_name}')
 
 
 if __name__ == '__main__':
@@ -109,8 +118,8 @@ if __name__ == '__main__':
     wandb.agent(sweep_id ,function=do_sweep,count=100)
     wandb.finish()
 
-    # train_dataset = Custom_train_dataset(dataset_path = 'Train_Val_Dataset/train')
-    # val_dataset = Custom_train_dataset(dataset_path = 'Train_Val_Dataset/val')
+    # train_dataset = Custom_dataset(dataset_path = 'Train_Val_Dataset/train')
+    # val_dataset = Custom_dataset(dataset_path = 'Train_Val_Dataset/val')
 
 
     # train_dataloader = DataLoader(train_dataset, batch_size=32 ,shuffle=True)
