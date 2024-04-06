@@ -1,0 +1,2 @@
+
+Adam Optimizer:batch_size:32filters:64dropout:0.2filter_multiplier:0.5kernel_size:3

@@ -10,10 +10,18 @@ from torch import nn
 import torchvision.models as models
 
 class Custom_VGG_Add_Layer(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, pretrained_model,num_classes,dropout):
         super(Custom_VGG_Add_Layer, self).__init__()
 
-        vgg_model = models.vgg16(pretrained = True)
+        if pretrained_model == 'vgg16':
+            vgg_model = models.vgg16(pretrained = True)
+        elif pretrained_model == 'vgg16_bn':
+            vgg_model = models.vgg16_bn(pretrained = True)
+        elif pretrained_model == 'vgg19':
+            vgg_model = models.vgg19(pretrained = True)
+        elif pretrained_model == 'vgg19_bn':
+            vgg_model = models.vgg19_bn(pretrained = True)
+
 
         for feature_extractors in vgg_model.features.parameters():
             feature_extractors.requires_grad = False
@@ -23,6 +31,7 @@ class Custom_VGG_Add_Layer(nn.Module):
 
         FC_layer2 = nn.Sequential(
             nn.Linear(feature_in,num_classes),
+            nn.Dropout(dropout),
             nn.Softmax()
         )
         vgg_model.classifier.add_module("FC_layer2",FC_layer2)
@@ -38,10 +47,17 @@ class Custom_VGG_Add_Layer(nn.Module):
 
 class Custom_VGG_Modify_LastLayer(nn.Module):
 
-    def __init__(self, num_classes):
+    def __init__(self, pretrained_model, num_classes):
         super(Custom_VGG_Modify_LastLayer, self).__init__()
 
-        vgg_model = models.vgg16(pretrained = True)
+        if pretrained_model == 'vgg16':
+            vgg_model = models.vgg16(pretrained = True)
+        elif pretrained_model == 'vgg16_bn':
+            vgg_model = models.vgg16_bn(pretrained = True)
+        elif pretrained_model == 'vgg19':
+            vgg_model = models.vgg19(pretrained = True)
+        elif pretrained_model == 'vgg19_bn':
+            vgg_model = models.vgg19_bn(pretrained = True)
 
         for feature_extractors in vgg_model.features.parameters():
             feature_extractors.requires_grad = False
@@ -64,10 +80,17 @@ class Custom_VGG_Modify_LastLayer(nn.Module):
 
 class Custom_VGG_Freezing_Layers(nn.Module):
 
-    def __init__(self, num_classes,layers_to_freeze):
+    def __init__(self,pretrained_model, num_classes,layers_to_freeze):
         super(Custom_VGG_Freezing_Layers, self).__init__()
 
-        vgg_model = models.vgg16(pretrained = True)
+        if pretrained_model == 'vgg16':
+            vgg_model = models.vgg16(pretrained = True)
+        elif pretrained_model == 'vgg16_bn':
+            vgg_model = models.vgg16_bn(pretrained = True)
+        elif pretrained_model == 'vgg19':
+            vgg_model = models.vgg19(pretrained = True)
+        elif pretrained_model == 'vgg19_bn':
+            vgg_model = models.vgg19_bn(pretrained = True)
 
         num_layers = len(list(vgg_model.features.children()))
         for i, layer in enumerate(vgg_model.features.children()):

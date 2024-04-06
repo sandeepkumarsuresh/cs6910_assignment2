@@ -97,5 +97,5 @@ class CNN_train():
 
             train_losses = np.array(train_losses).mean()
             val_losses = np.array(val_losses).mean()
-            # wandb.log({'training_loss':round(train_losses, 4) , "training_accuracy": train_accuracy ,  "validation_loss": round(val_losses, 4)  , "validation_accuracy":val_accuracy })
+            wandb.log({'training_loss':round(train_losses, 4) , "training_accuracy": train_accuracy ,  "validation_loss": round(val_losses, 4)  , "validation_accuracy":val_accuracy })
             print(f'training_loss: {round(train_losses, 4)}  training_accuracy: '+f'{train_accuracy}  validation_loss: {round(val_losses, 4)} '+ f'validation_accuracy: {val_accuracy}\n')

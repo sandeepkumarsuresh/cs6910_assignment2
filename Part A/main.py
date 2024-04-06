@@ -17,6 +17,8 @@ from CNN import CNN
 import wandb
 from CNN_train import CNN_train
 
+
+
 sweep_configuration = {
     'method': 'random', #grid, random
     'metric': {
@@ -58,8 +60,8 @@ def do_sweep():
     print(run_name)
     wandb.run.name = run_name
 
-    train_dataset = Custom_train_dataset(dataset_path = 'Train_Val_Dataset/train')
-    val_dataset = Custom_val_dataset(dataset_path = 'Train_Val_Dataset/val')
+    train_dataset = Custom_train_dataset(dataset_path = '../Train_Val_Dataset/train')
+    val_dataset = Custom_val_dataset(dataset_path = '../Train_Val_Dataset/val')
 
 
     train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size ,shuffle=True)
@@ -78,7 +80,7 @@ def do_sweep():
 
     cnn_model.to(device)   
 
-
+    print(cnn_model)
 
     loss_function = nn.CrossEntropyLoss()
     # optimizer = optim.SGD(cnn_model.parameters(), lr=0.001, momentum=0.9)

@@ -1,0 +1,35 @@
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Current SDK version is 0.16.3
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Configure stats pid to 67388
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Loading settings from /home/sandeep/.config/wandb/settings
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Loading settings from /home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/wandb/settings
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Loading settings from environment variables: {'project': 'dl_ass2', 'entity': 'ee23s059', 'root_dir': '/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A', 'sweep_id': 'i1sg3xpa', 'run_id': 'ig450huo', 'sweep_param_path': '/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/wandb/sweep-i1sg3xpa/config-ig450huo.yaml'}
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'Part A/main.py', 'program_abspath': '/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/main.py', 'program': '/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/main.py'}
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:_log_setup():526] Logging user logs to /home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/wandb/run-20240406_220634-ig450huo/logs/debug.log
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:_log_setup():527] Logging internal logs to /home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/wandb/run-20240406_220634-ig450huo/logs/debug-internal.log
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():566] calling init triggers
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():573] wandb.init called with sweep_config: {'batch_normalisation': 'True', 'batch_size': 32, 'data_augmentation': 'True', 'dropout': 0.2, 'filter_multiplier': 2, 'kernel_size': 5, 'n_filters': 128}
+config: {}
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():616] starting backend
+2024-04-06 22:06:34,489 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():620] setting up manager
+2024-04-06 22:06:34,494 INFO    Thread-3 (_run_job):67388 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-04-06 22:06:34,496 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():628] backend started and connected
+2024-04-06 22:06:34,506 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_config_callback():1343] config_cb None None {'batch_normalisation': 'True', 'batch_size': 32, 'data_augmentation': 'True', 'dropout': 0.2, 'filter_multiplier': 2, 'kernel_size': 5, 'n_filters': 128}
+2024-04-06 22:06:34,507 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():720] updated telemetry
+2024-04-06 22:06:34,512 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():753] communicating run to backend with 90.0 second timeout
+2024-04-06 22:06:35,199 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_on_init():2262] communicating current version
+2024-04-06 22:06:35,357 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_on_init():2271] got version response upgrade_message: "wandb version 0.16.6 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-04-06 22:06:35,357 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():804] starting run threads in backend
+2024-04-06 22:06:35,405 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_console_start():2241] atexit reg
+2024-04-06 22:06:35,405 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_redirect():2096] redirect: wrap_raw
+2024-04-06 22:06:35,405 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_redirect():2161] Wrapping output streams.
+2024-04-06 22:06:35,405 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_redirect():2186] Redirects installed.
+2024-04-06 22:06:35,406 INFO    Thread-3 (_run_job):67388 [wandb_init.py:init():847] run started, returning control to user process
+2024-04-06 22:06:35,407 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_finish():1970] finishing run ee23s059/dl_ass2/ig450huo
+2024-04-06 22:06:35,407 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_atexit_cleanup():2210] got exitcode: 1
+2024-04-06 22:06:35,407 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_restore():2193] restore
+2024-04-06 22:06:35,407 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_restore():2199] restore done
+2024-04-06 22:06:41,466 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_footer_history_summary_info():3866] rendering history
+2024-04-06 22:06:41,466 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_footer_history_summary_info():3898] rendering summary
+2024-04-06 22:06:41,469 INFO    Thread-3 (_run_job):67388 [wandb_run.py:_footer_sync_info():3825] logging synced files

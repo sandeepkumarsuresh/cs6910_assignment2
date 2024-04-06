@@ -1,0 +1,100 @@
+{
+    "os": "Linux-6.5.0-26-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "heartbeatAt": "2024-04-06T16:36:35.378711",
+    "startedAt": "2024-04-06T16:36:34.488078",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/main.py",
+    "codePathLocal": "main.py",
+    "codePath": "Part A/main.py",
+    "git": {
+        "remote": "https://github.com/sandeepkumarsuresh/cs6910_assignment2.git",
+        "commit": "0cd65bd511ed0fc7008c498bb83a12d26970cda4"
+    },
+    "email": "sandeepsuresh619@gmail.com",
+    "root": "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2",
+    "host": "sandeep-Inspiron-5415",
+    "username": "sandeep",
+    "executable": "/usr/bin/python3",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3351.7769999999996,
+        "min": 400.0,
+        "max": 4056.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4041.735,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4035.082,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4011.54,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4014.763,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 3469.553,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4042.364,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4035.271,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 2715.306,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 3166.319,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4034.854,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4041.926,
+            "min": 400.0,
+            "max": 4056.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 27.33292007446289,
+            "used": 16.28338623046875
+        }
+    },
+    "memory": {
+        "total": 7.103462219238281
+    }
+}

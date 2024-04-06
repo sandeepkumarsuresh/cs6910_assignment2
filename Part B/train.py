@@ -14,29 +14,49 @@ import wandb
 import os
 
 
-if __name__ == "__main__":
+sweep_configuration = {
+    'method': 'bayes', #grid, random
+    'metric': {
+    'name': 'validation_accuracy',
+    'goal': 'maximize'   
+    },
+    'parameters': {
+        'strategy': {
+            'values': ['Add_layer','Modify_Last_Layer','Freezing_Layers']
+        },
+        'pretrained_models': {
+            'values': ['vgg16','vgg16_bn','vgg19','vgg19_bn']
+        },
+        'dropout': {
+            'values': [0,0.2,0.3]
+        },
+        'batch_size':{
+            'values': [32,64]
+        }
+    }
+}
+sweep_id = wandb.sweep(sweep_configuration,project='dl_ass2')
 
-    PRETRAINED_MODEL_NAME = 'vgg16' # Later get from argsparse
+def do_sweep():
 
-    MODEL_SAV_DIR = "./model_dir"
-    os.makedirs(MODEL_SAV_DIR,exist_ok=True)
+    wandb.init()
+    config = wandb.config
+    run_name = "Part B "+"strategy"+str(config.strategy)+"pretrained model "+str(config.pretrained_models)+"batch_size:"+str(config.batch_size) + "dropout:"+str(config.dropout)
+    print(run_name)
+    wandb.run.name = run_name
 
-
-    # model = models.vgg16(pretrained=True)
-    # model = Custom_VGG_Add_Layer(num_classes=10)
-    model = Custom_VGG_Modify_LastLayer(num_classes=10)
-    # model = Custom_VGG_Freezing_Layers(num_classes=10,layers_to_freeze=3)
-
-    print(model)
+    if config.strategy == 'Add_layer':
+        model = Custom_VGG_Add_Layer(config.pretrained_models,num_classes=10,dropout=config.dropout)
+    elif config.strategy == 'Modify_Last_Layer':
+        model = Custom_VGG_Modify_LastLayer(config.pretrained_models,num_classes=10)
+    elif config.strategy == 'Freezing_Layers':
+        model = Custom_VGG_Freezing_Layers(config.pretrained_models,num_classes=10,layers_to_freeze=3)
+    
     train_dataset = Custom_train_dataset(dataset_path = '../Train_Val_Dataset/train')
     val_dataset = Custom_val_dataset(dataset_path = '../Train_Val_Dataset/val')
 
-
-    train_dataloader = DataLoader(train_dataset, batch_size=64 ,shuffle=True)
-    val_dataloader = DataLoader(val_dataset, batch_size=64, shuffle=True)
-
-
-
+    train_dataloader = DataLoader(train_dataset, batch_size=config.batch_size ,shuffle=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=config.batch_size, shuffle=True)    
 
     device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
@@ -45,8 +65,22 @@ if __name__ == "__main__":
     loss_function = nn.CrossEntropyLoss()
     # optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     optimizer = optim.Adam(model.parameters(),lr=0.0001)
-    trainer = CNN_train(model,train_dataloader,val_dataloader,optimizer,loss_function,device)
+    trainer = CNN_train(model,train_dataloader,val_dataloader,optimizer,loss_function,device,epoch=3)
 
     trainer.fit()
+    
+    file_path = f'{MODEL_SAV_DIR}/{config.strategy}_{config.pretrained_models}_{config.dropout}_{config.batch_size}'
+    
+    torch.save(model.state_dict(),file_path)
 
-    torch.save(model.state_dict())
+
+if __name__ == "__main__":
+
+    PRETRAINED_MODEL_NAME = 'vgg16' # Later get from argsparse
+
+    MODEL_SAV_DIR = "./model_dir"
+    os.makedirs(MODEL_SAV_DIR,exist_ok=True)
+
+    wandb.agent(sweep_id ,function=do_sweep,count=100)
+    wandb.finish()
+

@@ -1,0 +1,100 @@
+{
+    "os": "Linux-6.5.0-26-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "heartbeatAt": "2024-04-06T16:35:27.685710",
+    "startedAt": "2024-04-06T16:35:26.837693",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2/Part A/main.py",
+    "codePathLocal": "main.py",
+    "codePath": "Part A/main.py",
+    "git": {
+        "remote": "https://github.com/sandeepkumarsuresh/cs6910_assignment2.git",
+        "commit": "0cd65bd511ed0fc7008c498bb83a12d26970cda4"
+    },
+    "email": "sandeepsuresh619@gmail.com",
+    "root": "/home/sandeep/Documents/IITM/Deep Learning/Assignment 2",
+    "host": "sandeep-Inspiron-5415",
+    "username": "sandeep",
+    "executable": "/usr/bin/python3",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 3158.9166666666674,
+        "min": 400.0,
+        "max": 4056.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4042.342,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4004.504,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4036.359,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4031.696,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 3947.617,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 3946.303,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 1818.738,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 3638.416,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 2064.303,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4031.434,
+            "min": 400.0,
+            "max": 4056.0
+        },
+        {
+            "current": 4041.627,
+            "min": 400.0,
+            "max": 4056.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 27.33292007446289,
+            "used": 16.28376007080078
+        }
+    },
+    "memory": {
+        "total": 7.103462219238281
+    }
+}
