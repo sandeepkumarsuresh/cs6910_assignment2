@@ -2,6 +2,9 @@ import torch
 from preprocess import Custom_val_dataset
 from torch.utils.data import DataLoader
 from CNN import CNN
+import matplotlib.pyplot as plt
+import wandb
+import numpy as np
 
 def calculate_accuracy(model,dataloader):
 
@@ -26,6 +29,12 @@ def calculate_accuracy(model,dataloader):
 
 if __name__ == '__main__':
 
+    # wandb.login()
+
+    # run = wandb.init(
+    #     project ="dl_ass2"
+    # )  
+
     BATCH_SIZE = 32
     MODEL_PATH = 'model_dir/Adam Optimizer:batch_size:32filters:128dropout:0.3filter_multiplier:0.5kernel_size:3'
     class_map = (
@@ -48,56 +57,53 @@ if __name__ == '__main__':
     val_dataset = Custom_val_dataset(dataset_path = 'inaturalist_12K/val')
     val_dataloader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True)
 
-    # dataiter = iter(val_dataloader)
-    # # images, labels = next(dataiter)
-
-    # inputs, labels = dataiter[0].to(device), dataiter[1].to(device)
-
     model = CNN()
     model.to(device)
 
     model.load_state_dict(torch.load(MODEL_PATH))
-
-    # running_accuracy = 0
-    # total = 0
-
-    # model.eval()
-    # with torch.no_grad():
-    #     for data in val_dataloader:
-    #         inputs, outputs = data
-    #         inputs = inputs.to(device)
-    #         outputs = outputs.to(device)
-
-    #         predicted_outputs = model(inputs)
-
-    #         _, predicted = torch.max(predicted_outputs, 1)
-
-    #         total += outputs.size(0)
-    #         running_accuracy += (predicted == outputs).sum().item()
-
     acc = calculate_accuracy(model,val_dataloader)
 
-print('Accuracy of the model based on the test set of inputs is: %.2f %%' % (acc))
+    print('Accuracy of the model based on the test set of inputs is: %.2f %%' % (acc))
 
- 
 
-    # correct_pred = {classname: 0 for classname in class_map}
-    # total_pred = {classname: 0 for classname in class_map}
 
-    # # again no gradients needed
+    # num_classes = len(class_map)
+    # images_by_class = [[] for _ in range(num_classes)]
+    # true_labels_by_class = [[] for _ in range(num_classes)]
+    # predicted_labels_by_class = [[] for _ in range(num_classes)]
+
     # with torch.no_grad():
-    #     for data in val_dataloader:
-    #         images, labels = data
-    #         outputs = net(images)
-    #         _, predictions = torch.max(outputs, 1)
-    #         # collect the correct predictions for each class
-    #         for label, prediction in zip(labels, predictions):
-    #             if label == prediction:
-    #                 correct_pred[class_map[label]] += 1
-    #             total_pred[class_map[label]] += 1
+    #     for sample_images, sample_labels in val_dataloader:
+    #         sample_images = sample_images.to(device)
+    #         sample_labels = sample_labels.to(device)
 
+    #         predictions = model(sample_images)
+    #         _, predicted = torch.max(predictions, 1)
 
-    # # print accuracy for each class
-    # for classname, correct_count in correct_pred.items():
-    #     accuracy = 100 * float(correct_count) / total_pred[classname]
-    #     print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
+    #         for i in range(sample_images.size(0)):
+    #             true_label = sample_labels[i].item()
+    #             predicted_label = predicted[i].item()
+
+    #             images_by_class[true_label].append(sample_images[i].cpu())
+    #             true_labels_by_class[true_label].append(true_label)
+    #             predicted_labels_by_class[true_label].append(predicted_label)
+
+    # plt.figure(figsize=(15, 30))
+    # for i in range(num_classes):
+    #     class_name = class_map[i]
+
+    #     num_images_to_display = min(3, len(images_by_class[i]))
+    #     for j in range(num_images_to_display):
+    #         plt.subplot(num_classes, 3, i * 3 + j + 1)
+    #         img_np = (images_by_class[i][j].permute(1, 2, 0).numpy() * 255).astype(np.uint8)
+    #         plt.imshow(img_np)
+    #         plt.title(f"True: {class_map[true_labels_by_class[i][j]]}\nPred: {class_map[predicted_labels_by_class[i][j]]}")
+    #         plt.axis('off')
+
+    # plt.tight_layout()
+
+    # wandb.log({"sample_predictions": plt})
+
+    # plt.savefig('sample_predictions.png')
+
+    # wandb.finish()
