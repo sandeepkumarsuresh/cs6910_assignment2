@@ -4,7 +4,6 @@ from torch import nn
 from torch.utils.data import DataLoader,Dataset
 import os
 import cv2
-import splitfolders
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import torch.nn as nn

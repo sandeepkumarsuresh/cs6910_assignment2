@@ -11,10 +11,11 @@ Follow the Instructions given in the README file in Part A and Part B folders to
 
 ## Prerequisites
 
-Before running the code you need to install all the requirements
+Before running the code you need to install all the requirements and split the dataset
 
 ```
 pip3 install -r requirements.txt
+pip3 python3 split_dataset.py -d "path/to/dataset"
 ```
 
 ## References
